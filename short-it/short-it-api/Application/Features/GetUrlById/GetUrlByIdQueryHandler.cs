@@ -4,6 +4,7 @@ using Application.Contracts.Persistence;
 using Application.Exceptions;
 using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.GetUrlById;
 
@@ -13,7 +14,8 @@ public sealed class GetUrlByIdQueryHandler :
 {
     private readonly IUrlRepository _urlRepository;
 
-    public GetUrlByIdQueryHandler(IMapper mapper, IUrlRepository repository) : base(mapper)
+    public GetUrlByIdQueryHandler(IMapper mapper, IUrlRepository repository, ILogger<GetUrlByIdQueryHandler> logger) :
+        base(mapper, logger)
     {
         _urlRepository = repository;
     }
@@ -22,6 +24,7 @@ public sealed class GetUrlByIdQueryHandler :
     {
         try
         {
+            Logger.LogInformation("Processing handler {handler} with request {@request}", RequestName, request);
             var validationResult = await Validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
@@ -42,6 +45,7 @@ public sealed class GetUrlByIdQueryHandler :
         }
         catch (Exception ex)
         {
+            Logger.LogError(ex, "Error when getting the url due to: {message}", ex.Message);
             if (ex is BadRequestException or NotFoundException)
             {
                 throw;

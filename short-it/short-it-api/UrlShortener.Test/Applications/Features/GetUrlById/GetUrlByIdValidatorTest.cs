@@ -5,7 +5,7 @@ using Xunit;
 
 namespace UrlShortener.Test.Applications.Features.GetUrlById;
 
-public sealed class GetUrlByIdValidatorTest : TestFixture
+public sealed class GetUrlByIdValidatorTest : TestFixture<GetUrlByIdQueryValidator>
 {
     private readonly GetUrlByIdQueryValidator _validator = new();
 
@@ -17,7 +17,7 @@ public sealed class GetUrlByIdValidatorTest : TestFixture
             .Create();
 
         var result = _validator.Validate(query);
-        
+
         Assert.False(result.IsValid);
     }
 
@@ -27,9 +27,9 @@ public sealed class GetUrlByIdValidatorTest : TestFixture
         var query = Fixture.Build<GetUrlByIdQuery>()
             .With(x => x.UrlId, 1)
             .Create();
-        
+
         var result = _validator.Validate(query);
-        
+
         Assert.True(result.IsValid);
     }
 }
