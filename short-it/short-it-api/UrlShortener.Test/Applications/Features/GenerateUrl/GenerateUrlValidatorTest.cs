@@ -5,10 +5,10 @@ using Xunit;
 
 namespace UrlShortener.Test.Applications.Features.GenerateUrl;
 
-public sealed class GenerateUrlValidatorTest : TestFixture
+public sealed class GenerateUrlValidatorTest : TestFixture<GenerateUrlValidatorTest>
 {
     private readonly GenerateUrlCommandValidator _validator = new();
-    
+
     [Fact]
     public void GivenEmptyUrl_ThenReturnFalse()
     {
@@ -17,7 +17,7 @@ public sealed class GenerateUrlValidatorTest : TestFixture
             .Create();
 
         var result = _validator.Validate(request);
-        
+
         Assert.False(result.IsValid);
     }
 
@@ -27,9 +27,9 @@ public sealed class GenerateUrlValidatorTest : TestFixture
         var request = Fixture.Build<GenerateUrlCommand>()
             .With(x => x.LongUrl, "asdasd")
             .Create();
-        
+
         var result = _validator.Validate(request);
-        
+
         Assert.False(result.IsValid);
     }
 
@@ -42,9 +42,9 @@ public sealed class GenerateUrlValidatorTest : TestFixture
         var request = Fixture.Build<GenerateUrlCommand>()
             .With(x => x.LongUrl, url)
             .Create();
-        
+
         var result = _validator.Validate(request);
-        
+
         Assert.True(result.IsValid);
     }
 }

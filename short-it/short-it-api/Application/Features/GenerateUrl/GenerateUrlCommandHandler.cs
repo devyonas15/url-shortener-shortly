@@ -6,14 +6,18 @@ using Domain.Constants;
 using Domain.Entities;
 using Domain.Extensions;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.GenerateUrl;
 
-public sealed class GenerateUrlCommandHandler: BaseHandlerWithValidator<GenerateUrlCommand, int, GenerateUrlCommandValidator>, IRequestHandler<GenerateUrlCommand, int>
+public sealed class GenerateUrlCommandHandler :
+    BaseHandlerWithValidator<GenerateUrlCommand, int, GenerateUrlCommandValidator>,
+    IRequestHandler<GenerateUrlCommand, int>
 {
     private readonly IUrlRepository _urlRepository;
 
-    public GenerateUrlCommandHandler(IUrlRepository urlRepository, IMapper mapper) : base(mapper)
+    public GenerateUrlCommandHandler(IUrlRepository urlRepository, IMapper mapper,
+        ILogger<GenerateUrlCommandHandler> logger) : base(mapper, logger)
     {
         _urlRepository = urlRepository;
     }
@@ -22,13 +26,14 @@ public sealed class GenerateUrlCommandHandler: BaseHandlerWithValidator<Generate
     {
         try
         {
+            Logger.LogInformation("Processing handler {handler} with request {@request}", RequestName, request);
             var validationResult = await Validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
             {
                 throw new BadRequestException("Validation payload when generating URL:", validationResult);
             }
-    
+
             var existingUrl = await _urlRepository.GetByLongUrlAsync(request.LongUrl, cancellationToken);
 
             if (null != existingUrl)
@@ -50,6 +55,7 @@ public sealed class GenerateUrlCommandHandler: BaseHandlerWithValidator<Generate
         }
         catch (Exception ex)
         {
+            Logger.LogError(ex, "Error when generating the url due to: {message}", ex.Message);
             if (ex is DuplicateException or BadRequestException)
             {
                 throw;

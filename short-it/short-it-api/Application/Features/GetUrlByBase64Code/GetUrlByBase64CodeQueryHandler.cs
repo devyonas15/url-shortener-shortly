@@ -5,6 +5,7 @@ using Application.Exceptions;
 using AutoMapper;
 using Domain.Constants;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.GetUrlByBase64Code;
 
@@ -14,7 +15,8 @@ public sealed class GetUrlByBase64CodeQueryHandler :
 {
     private readonly IUrlRepository _urlRepository;
 
-    public GetUrlByBase64CodeQueryHandler(IUrlRepository urlRepository, IMapper mapper) : base(mapper)
+    public GetUrlByBase64CodeQueryHandler(IUrlRepository urlRepository, IMapper mapper,
+        ILogger<GetUrlByBase64CodeQueryHandler> logger) : base(mapper, logger)
     {
         _urlRepository = urlRepository;
     }
@@ -24,6 +26,7 @@ public sealed class GetUrlByBase64CodeQueryHandler :
     {
         try
         {
+            Logger.LogInformation("Processing handler {handler} with request {@request}", RequestName, request);
             var validationResult = await Validator.ValidateAsync(request, cancellationToken);
 
             if (!validationResult.IsValid)
@@ -45,6 +48,7 @@ public sealed class GetUrlByBase64CodeQueryHandler :
         }
         catch (Exception ex)
         {
+            Logger.LogError(ex, "Error when getting the url due to: {message}", ex.Message);
             if (ex is BadRequestException or NotFoundException)
             {
                 throw;

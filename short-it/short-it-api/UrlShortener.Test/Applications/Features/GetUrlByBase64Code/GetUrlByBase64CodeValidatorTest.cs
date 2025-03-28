@@ -5,7 +5,7 @@ using Xunit;
 
 namespace UrlShortener.Test.Applications.Features.GetUrlByBase64Code;
 
-public sealed class GetUrlByBase64CodeValidatorTest : TestFixture
+public sealed class GetUrlByBase64CodeValidatorTest : TestFixture<GetUrlByBase64CodeValidator>
 {
     private readonly GetUrlByBase64CodeValidator _validator = new();
 
@@ -17,7 +17,7 @@ public sealed class GetUrlByBase64CodeValidatorTest : TestFixture
             .Create();
 
         var result = _validator.Validate(query);
-        
+
         Assert.False(result.IsValid);
     }
 
@@ -27,9 +27,9 @@ public sealed class GetUrlByBase64CodeValidatorTest : TestFixture
         var query = Fixture.Build<GetUrlByBase64CodeQuery>()
             .With(x => x.Base64Code, "ab3c0f3")
             .Create();
-        
+
         var result = _validator.Validate(query);
-        
+
         Assert.True(result.IsValid);
     }
 }

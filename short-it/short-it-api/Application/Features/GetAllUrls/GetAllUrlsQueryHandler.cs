@@ -4,6 +4,7 @@ using Application.Contracts.Persistence;
 using Application.Exceptions;
 using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.GetAllUrls;
 
@@ -12,7 +13,8 @@ public sealed class GetAllUrlsQueryHandler : BaseHandler<GetAllUrlsQuery, IReadO
 {
     private readonly IUrlRepository _urlRepository;
 
-    public GetAllUrlsQueryHandler(IUrlRepository urlRepository, IMapper mapper) : base(mapper)
+    public GetAllUrlsQueryHandler(IUrlRepository urlRepository, IMapper mapper, ILogger<GetAllUrlsQueryHandler> logger)
+        : base(mapper, logger)
     {
         _urlRepository = urlRepository;
     }
@@ -22,6 +24,7 @@ public sealed class GetAllUrlsQueryHandler : BaseHandler<GetAllUrlsQuery, IReadO
     {
         try
         {
+            Logger.LogInformation("Processing handler {handler} with request {@request}", RequestName, request);
             var urls = await _urlRepository.GetAllAsync(cancellationToken);
 
             if (0 == urls.Count)
@@ -39,6 +42,7 @@ public sealed class GetAllUrlsQueryHandler : BaseHandler<GetAllUrlsQuery, IReadO
         }
         catch (Exception ex)
         {
+            Logger.LogError(ex, "Error when getting the urls due to: {message}", ex.Message);
             throw new Exception($"Error occured when retrieving the user records: {ex.Message}");
         }
     }

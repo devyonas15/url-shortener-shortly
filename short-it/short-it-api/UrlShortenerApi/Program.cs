@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Application;
 using Infrastructure;
 using Persistence;
+using Serilog;
 using UrlShortenerApi.Configurations;
 using UrlShortenerApi.Middleware;
 
@@ -14,6 +15,11 @@ builder.Services.AddControllers();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices();
 builder.Services.AddPersistenceServices();
+builder.Services.AddLogging();
+
+// Add serilog
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 // Add Cors
 builder.Services.AddCors(options =>
@@ -28,7 +34,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
 app.UseCors("all");
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

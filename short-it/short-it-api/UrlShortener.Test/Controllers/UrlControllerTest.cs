@@ -14,7 +14,7 @@ using Xunit;
 
 namespace UrlShortener.Test.Controllers;
 
-public sealed class UrlControllerTest : TestFixture
+public sealed class UrlControllerTest : TestFixture<UrlController>
 {
     private readonly UrlController _controller = new(Mediator.Object);
 
@@ -23,7 +23,7 @@ public sealed class UrlControllerTest : TestFixture
     {
         Mediator.Setup(x => x.Send(It.IsAny<GetUrlByIdQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Fixture.Create<UrlResponse>());
-        
+
         var response = await _controller.GetUrlByIdAsync(Fixture.Create<int>());
         var okResponse = response.Result as OkObjectResult;
 
@@ -39,7 +39,7 @@ public sealed class UrlControllerTest : TestFixture
 
         var response = await _controller.GetUrlsAsync();
         var okResponse = response.Result as OkObjectResult;
-        
+
         Assert.Equal((int)HttpStatusCode.OK, okResponse?.StatusCode);
     }
 
@@ -51,7 +51,7 @@ public sealed class UrlControllerTest : TestFixture
 
         var response = await _controller.GetUrlByBase64Async("asdfg3");
         var okResponse = response.Result as OkObjectResult;
-        
+
         Assert.Equal((int)HttpStatusCode.OK, okResponse?.StatusCode);
         Assert.NotNull(okResponse?.Value);
     }
@@ -62,10 +62,10 @@ public sealed class UrlControllerTest : TestFixture
         var request = Fixture.Create<GenerateUrlCommand>();
         Mediator.Setup(x => x.Send(It.IsAny<GenerateUrlCommand>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(1);
-        
+
         var response = await _controller.GenerateUrlAsync(request);
         var createdResponse = response.Result as CreatedResult;
-        
+
         Assert.Equal((int)HttpStatusCode.Created, createdResponse?.StatusCode);
         Assert.NotNull(createdResponse?.Value);
     }
