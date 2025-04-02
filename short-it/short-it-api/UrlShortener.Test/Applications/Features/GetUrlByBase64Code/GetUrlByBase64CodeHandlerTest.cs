@@ -42,9 +42,6 @@ public sealed class GetUrlByBase64CodeHandlerTest : TestFixture<GetUrlByBase64Co
     [Fact]
     public async Task GivenValidRequest_WhenDataIsFound_ThenGetUrlByBase64CodeReturnsUrl()
     {
-        Fixture.Customize<Url>(c => c
-            .Without(u => u.Metrics));
-
         var query = Fixture.Build<GetUrlByBase64CodeQuery>()
             .With(x => x.Base64Code, "asfdag3")
             .Create();

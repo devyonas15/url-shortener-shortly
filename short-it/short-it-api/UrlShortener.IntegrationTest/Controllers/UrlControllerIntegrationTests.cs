@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using Application.Features.GenerateUrl;
+using Microsoft.AspNetCore.Mvc.Testing;
 using UrlShortener.IntegrationTest.BaseClasses;
 using UrlShortener.IntegrationTest.Constants;
 using Xunit;
@@ -13,7 +14,11 @@ public sealed class UrlControllerIntegrationTests : IClassFixture<IntegrationTes
 
     public UrlControllerIntegrationTests(IntegrationTestFactory<Program> factory)
     {
-        _client = factory.CreateClient();
+        // Don't allow auto redirect - allowing integration to stop till before redirection so 302 is caught
+        _client = factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
     }
 
     [Fact]
@@ -60,5 +65,15 @@ public sealed class UrlControllerIntegrationTests : IClassFixture<IntegrationTes
     
         // Assert
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task When_RedirectUrl_Endpoint_Is_Called_Then_Redirect_To_Url()
+    {
+        // Act
+        var response = await _client.GetAsync(TestConstants.UrlShortPrefix1);
+        
+        // Assert
+        Assert.Equal(HttpStatusCode.Found, response.StatusCode);
     }
 }

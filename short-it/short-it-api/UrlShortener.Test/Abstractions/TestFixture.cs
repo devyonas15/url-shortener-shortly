@@ -15,6 +15,9 @@ public abstract class TestFixture<T> where T : class
 
     protected TestFixture()
     {
-        
+        // Bypassing Circular Dependency for Url <-> UrlMetrics for now
+        Fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+            .ForEach(b => Fixture.Behaviors.Remove(b));
+        Fixture.Behaviors.Add(new OmitOnRecursionBehavior());
     }
 }

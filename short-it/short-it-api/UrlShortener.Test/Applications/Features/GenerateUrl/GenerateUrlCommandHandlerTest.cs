@@ -2,7 +2,6 @@ using Application.Contracts.Persistence;
 using Application.Exceptions;
 using Application.Features.GenerateUrl;
 using AutoFixture;
-using AutoMapper;
 using Domain.Entities;
 using Moq;
 using UrlShortener.Test.Abstractions;
@@ -29,9 +28,6 @@ public sealed class GenerateUrlCommandHandlerTest : TestFixture<GenerateUrlComma
     [Fact]
     public async Task GivenValidLongUrl_WhenGenerateUrlCommand_AndDuplicateUrlFound_ThenThrowsDuplicateException()
     {
-        Fixture.Customize<Url>(c =>
-            c.Without(x => x.Metrics));
-
         var request = Fixture.Build<GenerateUrlCommand>()
             .With(x => x.LongUrl, "https://www.example.com")
             .Create();

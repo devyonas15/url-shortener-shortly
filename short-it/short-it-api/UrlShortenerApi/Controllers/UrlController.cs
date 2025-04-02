@@ -3,6 +3,7 @@ using Application.Features.GenerateUrl;
 using Application.Features.GetAllUrls;
 using Application.Features.GetUrlByBase64Code;
 using Application.Features.GetUrlById;
+using Application.Features.RedirectUrl;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -69,5 +70,17 @@ public sealed class UrlController : ControllerBase
             Success = true,
             id = response 
         });
+    }
+
+    [HttpGet("/{base64Code}")]
+    [ProducesResponseType(StatusCodes.Status302Found)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult> RedirectUrlAsync(string base64Code)
+    {
+        var response = await _mediator.Send(new RedirectUrlQuery(base64Code));
+
+        return Redirect(response);
     }
 }

@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Domain.Constants;
 using Domain.Entities;
 using Persistence.Contexts;
 using UrlShortener.IntegrationTest.Constants;
@@ -15,7 +16,7 @@ public static class SeedData
             new Url
             {
                 UrlId = TestConstants.UrlId1,
-                ShortUrl = TestConstants.UrlShortPrefix1,
+                ShortUrl = $"{UrlConstants.BaseShortUrl}{TestConstants.UrlShortPrefix1}",
                 LongUrl = TestConstants.OriginalUrl1,
             }
         );

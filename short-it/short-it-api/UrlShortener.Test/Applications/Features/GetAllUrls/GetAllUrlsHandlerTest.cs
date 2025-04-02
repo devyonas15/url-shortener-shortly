@@ -3,7 +3,6 @@ using Application.Contracts.Persistence;
 using Application.Exceptions;
 using Application.Features.GetAllUrls;
 using AutoFixture;
-using AutoMapper;
 using Domain.Entities;
 using Moq;
 using UrlShortener.Test.Abstractions;
@@ -31,9 +30,6 @@ public sealed class GetAllUrlsHandlerTest : TestFixture<GetAllUrlsQueryHandler>
     [Fact]
     public async Task GivenDataIsFound_ThenReturnUrls()
     {
-        Fixture.Customize<Url>(c => c
-            .Without(u => u.Metrics));
-
         var mockRequest = CreateMockRequest();
 
         UrlRepository.Setup(x => x.GetAllAsync(CancellationToken.None))

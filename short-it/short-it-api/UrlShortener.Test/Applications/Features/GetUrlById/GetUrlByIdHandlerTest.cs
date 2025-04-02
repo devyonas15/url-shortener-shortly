@@ -43,9 +43,6 @@ public sealed class GetUrlByIdHandlerTest : TestFixture<GetUrlByIdQueryHandler>
     [Fact]
     public async Task GivenValidId_WhenRecordIsFound_ThenReturnResponse()
     {
-        Fixture.Customize<Url>(c => c
-            .Without(u => u.Metrics));
-
         var mockRequest = Fixture.Build<GetUrlByIdQuery>()
             .With(x => x.UrlId, 1)
             .Create();
