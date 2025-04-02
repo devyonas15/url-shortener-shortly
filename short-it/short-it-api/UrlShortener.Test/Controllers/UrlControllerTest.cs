@@ -4,8 +4,8 @@ using Application.Features.GenerateUrl;
 using Application.Features.GetAllUrls;
 using Application.Features.GetUrlByBase64Code;
 using Application.Features.GetUrlById;
+using Application.Features.RedirectUrl;
 using AutoFixture;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using UrlShortener.Test.Abstractions;
@@ -68,5 +68,20 @@ public sealed class UrlControllerTest : TestFixture<UrlController>
 
         Assert.Equal((int)HttpStatusCode.Created, createdResponse?.StatusCode);
         Assert.NotNull(createdResponse?.Value);
+    }
+
+    [Fact]
+    public async Task GivenValidBody_WhenRedirectUrl_ThenRedirect()
+    {
+        const string originalUrl = "https://www.google.com";
+        const string base64Code = "aWqawi1";
+        
+        Mediator.Setup(x => x.Send(It.IsAny<RedirectUrlQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(originalUrl);
+        
+        var response = await _controller.RedirectUrlAsync(base64Code);
+        
+        var redirectResultResponse = Assert.IsType<RedirectResult>(response);
+        Assert.Equal(originalUrl, redirectResultResponse.Url);
     }
 }
