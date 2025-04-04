@@ -1,6 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Application;
+using HealthChecks.UI.Client;
 using Infrastructure;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Persistence;
 using Serilog;
 using UrlShortenerApi.Configurations;
@@ -8,8 +10,11 @@ using UrlShortenerApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add options services to the container by using IOption Pattern.
 builder.Services.AddOptionsConfiguration(builder.Configuration);
+
+// Add Health check configuration
+builder.Services.AddHealthCheckConfiguration();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices();
@@ -51,7 +56,17 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Register the health
+app.MapHealthChecks(
+    "api/health",
+    new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
+
 app.Run();
 
 [ExcludeFromCodeCoverage]
-public partial class Program { }
+public partial class Program
+{
+}
