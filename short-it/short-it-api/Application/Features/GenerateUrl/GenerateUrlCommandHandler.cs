@@ -1,4 +1,5 @@
 using Application.Abstractions;
+using Application.Commons.DTO;
 using Application.Contracts.Persistence;
 using Application.Exceptions;
 using AutoMapper;
@@ -11,8 +12,8 @@ using Microsoft.Extensions.Logging;
 namespace Application.Features.GenerateUrl;
 
 public sealed class GenerateUrlCommandHandler :
-    BaseHandlerWithValidator<GenerateUrlCommand, int, GenerateUrlCommandValidator>,
-    IRequestHandler<GenerateUrlCommand, int>
+    BaseHandlerWithValidator<GenerateUrlCommand, GenerateUrlResponse, GenerateUrlCommandValidator>,
+    IRequestHandler<GenerateUrlCommand, GenerateUrlResponse>
 {
     private readonly IUrlRepository _urlRepository;
 
@@ -22,7 +23,7 @@ public sealed class GenerateUrlCommandHandler :
         _urlRepository = urlRepository;
     }
 
-    public async Task<int> Handle(GenerateUrlCommand request, CancellationToken cancellationToken = default)
+    public async Task<GenerateUrlResponse> Handle(GenerateUrlCommand request, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -51,7 +52,9 @@ public sealed class GenerateUrlCommandHandler :
 
             await _urlRepository.CreateAsync(url, cancellationToken);
 
-            return url.UrlId;
+            var response = Mapper.Map<GenerateUrlResponse>(url);
+
+            return response;
         }
         catch (Exception ex)
         {
