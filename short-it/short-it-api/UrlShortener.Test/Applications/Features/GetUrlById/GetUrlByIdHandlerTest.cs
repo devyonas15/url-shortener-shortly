@@ -3,7 +3,6 @@ using Application.Contracts.Persistence;
 using Application.Exceptions;
 using Application.Features.GetUrlById;
 using AutoFixture;
-using AutoMapper;
 using Domain.Entities;
 using Moq;
 using UrlShortener.Test.Abstractions;

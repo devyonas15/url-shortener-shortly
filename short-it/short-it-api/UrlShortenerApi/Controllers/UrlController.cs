@@ -61,15 +61,11 @@ public sealed class UrlController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<object>> GenerateUrlAsync([FromBody] GenerateUrlCommand command)
+    public async Task<ActionResult<GenerateUrlResponse>> GenerateUrlAsync([FromBody] GenerateUrlCommand command)
     {
         var response = await _mediator.Send(command);
         
-        return Created($"/{response}", new
-        {
-            Success = true,
-            id = response 
-        });
+        return Created($"/{response.Id}", response);
     }
 
     [HttpGet("/{base64Code}")]

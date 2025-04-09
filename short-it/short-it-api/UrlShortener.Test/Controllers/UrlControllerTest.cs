@@ -60,8 +60,12 @@ public sealed class UrlControllerTest : TestFixture<UrlController>
     public async Task GivenValidBody_WhenGenerateUrlAsync_ThenReturnsCreated()
     {
         var request = Fixture.Create<GenerateUrlCommand>();
+        var mockUrlResponse = Fixture.Build<GenerateUrlResponse>()
+            .With(x => x.Id, 1)
+            .With(x => x.ShortUrl, "https://shorturl.com")
+            .Create();
         Mediator.Setup(x => x.Send(It.IsAny<GenerateUrlCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(1);
+            .ReturnsAsync(mockUrlResponse);
 
         var response = await _controller.GenerateUrlAsync(request);
         var createdResponse = response.Result as CreatedResult;
