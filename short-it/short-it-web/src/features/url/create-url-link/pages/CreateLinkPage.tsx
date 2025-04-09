@@ -1,59 +1,64 @@
 import { Box, Typography } from '@mui/material';
 import { FC, useEffect, useState } from 'react';
-import UrlGenerationForm from '../components/UrlGenerationForm';
-import GenerateSuccessModal from '../components/GenerateSuccessModal';
+import GenerateSuccessModal from '../components/GenerateSuccessModal/GenerateSuccessModal';
 import NotificationBar from '../../../shared/components/Notification';
 import CheckIcon from '@mui/icons-material/Check';
+import CancelIcon from '@mui/icons-material/Cancel';
+import UrlGenerationForm from '../components/UrlGenerationForm/UrlGenerationForm';
+import { styles } from './CreateLinkPage.styles';
 
 const CreateLinkPage: FC = () => {
   const [shortUrl, setShortUrl] = useState<string | undefined>('');
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState<boolean>(false);
-  const [isNotificationOpen, setIsNotificationOpen] = useState<boolean>(false);
+  const [isSuccessNotificationOpen, setisSuccessNotificationOpen] = useState<boolean>(false);
+  const [isFailedNotificationOpen, setIsFailedNotificationOpen] = useState<boolean>(false);
 
   // Manual close of the NotificationBar after 1 second
   useEffect(() => {
-    if (isNotificationOpen) {
+    if (isSuccessNotificationOpen || isFailedNotificationOpen) {
       const timer = setTimeout(() => {
-        setIsNotificationOpen(false);
+        isSuccessNotificationOpen ? setisSuccessNotificationOpen(false) : setIsFailedNotificationOpen(false);
       }, 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [isNotificationOpen]);
+  }, [isSuccessNotificationOpen, isFailedNotificationOpen]);
 
   return (
-    <Box sx={{ mt: 5 }}>
+    <Box sx={styles.pageContainer}>
       <Typography
-        sx={{
-          mb: 3,
-          ml: 1,
-          color: '#47505F',
-          fontWeight: 'bold',
-          fontSize: 30,
-        }}
+        sx={styles.pageTitle}
       >
         Create a link
       </Typography>
-      <Typography sx={{ ml: 1, mb: 3, color: '#47505F' }}>
+      <Typography sx={styles.pageSubTitle}>
         You can create links by filling up the form.
       </Typography>
       <UrlGenerationForm
         onShortUrlGenerated={setShortUrl}
         onSuccessfulSubmit={setIsSuccessModalOpen}
+        onFailedSubmit={setIsFailedNotificationOpen}
       />
       <GenerateSuccessModal
         onClose={() => setIsSuccessModalOpen(false)}
         isOpen={isSuccessModalOpen}
         shortUrl={shortUrl}
-        onCopyToClipboard={setIsNotificationOpen}
+        onCopyToClipboard={setisSuccessNotificationOpen}
       />
-      {isNotificationOpen && (
+      {isSuccessNotificationOpen && (
         <NotificationBar
           message='URL is successfully copied to clipboard'
           severity='success'
           icon={<CheckIcon fontSize='inherit' />}
         />
       )}
+      {isFailedNotificationOpen && (
+        <NotificationBar
+          message='Failed to generate URL'
+          severity='error'
+          icon={<CancelIcon fontSize='inherit' />}
+        />
+        )}
     </Box>
   );
 };

@@ -8,4 +8,5 @@ export interface UrlSuccessModalProps {
 export interface UrlGenerationFormProps {
   onShortUrlGenerated: (url: string | undefined) => void;
   onSuccessfulSubmit: (isSuccessModalOpen: boolean) => void;
+  onFailedSubmit: (isFailedNotificationOpen: boolean) => void;
 }

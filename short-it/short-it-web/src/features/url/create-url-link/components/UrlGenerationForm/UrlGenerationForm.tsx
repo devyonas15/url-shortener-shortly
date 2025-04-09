@@ -1,18 +1,20 @@
 import { Box, Button, InputLabel, Stack, TextField } from '@mui/material';
 import { FC, useState } from 'react';
-import { UrlGenerationFormSchema } from '../schemas/UrlGenerationFormSchema';
+import { UrlGenerationFormSchema } from '../../schemas/UrlGenerationFormSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   GenerateUrlRequest,
   GenerateUrlResponse,
-} from '../../common/types/UrlDTO';
-import { createShortUrl } from '../services/urlService';
-import { UrlGenerationFormProps } from '../../common/types/UrlProps';
+} from '../../../common/types/UrlDTO';
+import { createShortUrl } from '../../services/urlService';
+import { UrlGenerationFormProps } from '../../../common/types/UrlProps';
+import { styles } from './UrlGenerationForm.styles';
 
 const UrlGenerationForm: FC<UrlGenerationFormProps> = ({
   onShortUrlGenerated,
   onSuccessfulSubmit,
+  onFailedSubmit
 }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const {
@@ -41,26 +43,21 @@ const UrlGenerationForm: FC<UrlGenerationFormProps> = ({
       setIsSubmitting(false);
     } catch (error: any) {
       console.error(error.message);
+      onFailedSubmit(true);
       setIsSubmitting(false);
     }
   };
 
   return (
     <Box
-      sx={{
-        width: 0.9,
-        margin: 'auto',
-        backgroundColor: 'white',
-        padding: 2,
-        borderRadius: '10px',
-      }}
+      sx={styles.formContainer}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack direction='column' spacing={3}>
           <Box>
             <InputLabel
               htmlFor='url-input'
-              sx={{ mb: 1.5, fontWeight: 'bold', color: 'black' }}
+              sx={styles.urlInputLabel}
             >
               Destination
             </InputLabel>
@@ -84,7 +81,7 @@ const UrlGenerationForm: FC<UrlGenerationFormProps> = ({
             disabled={!!errors.longUrl || getValues('longUrl') === ''}
             type='submit'
             variant='contained'
-            sx={{ mt: 5, height: 50, backgroundColor: '#D22B2B' }}
+            sx={styles.generateUrlButton}
           >
             Create your link
           </Button>
