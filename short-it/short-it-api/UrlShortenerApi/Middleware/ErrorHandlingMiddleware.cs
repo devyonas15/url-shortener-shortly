@@ -33,6 +33,7 @@ public sealed class ErrorHandlingMiddleware
         
         context.Response.StatusCode = exception switch
         {
+            InvalidCredentialsException _ => (int)HttpStatusCode.Unauthorized,
             BadRequestException => (int)HttpStatusCode.BadRequest,
             NotFoundException => (int) HttpStatusCode.NotFound,
             DuplicateException => (int) HttpStatusCode.Conflict,
