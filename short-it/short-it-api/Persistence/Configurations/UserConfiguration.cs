@@ -9,7 +9,9 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<ApplicationUser
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
         builder.ToTable("User");
-        builder.HasKey(x => x.Id);
+        
+        // Set composite key manually for the Identity
+        builder.HasKey(x =>  x.Id);
 
         // Ignore some columns that are not needed from the IdentityUser
         builder.Ignore(x => x.UserName);

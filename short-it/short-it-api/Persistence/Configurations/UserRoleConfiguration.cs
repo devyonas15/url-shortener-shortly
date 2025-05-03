@@ -9,5 +9,8 @@ public sealed class UserRoleConfiguration : IEntityTypeConfiguration<IdentityUse
     public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)
     {
         builder.ToTable("UserRole");
+        
+        // Set composite key manually for the Identity
+        builder.HasKey(x => new { x.UserId, x.RoleId });
     }
 }

@@ -20,16 +20,19 @@ public static class DependencyInjection
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         var assembly = typeof(DependencyInjection).Assembly;
-        
+
         services
             .AddAutoMapper(assembly)
             .AddValidatorsFromAssembly(assembly)
-            .AddIdentity<ApplicationUser, IdentityRole>()
+            .AddIdentityCore<ApplicationUser>() //Needed for API only, since AddIdentity() is for the API + Blazor
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AuthDbContext>()
             .AddDefaultTokenProviders();
-        
+
+        // Add services
         services.AddScoped<IAuthService, AuthService>();
-        
+        services.AddScoped<ITokenService, TokenService>();
+
         return services;
     }
 }

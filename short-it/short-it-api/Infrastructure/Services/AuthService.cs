@@ -15,7 +15,8 @@ public sealed class AuthService : BaseService, IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
 
-    public AuthService(UserManager<ApplicationUser> userManager, ILogger<AuthService> logger, IMapper mapper) : base(logger, mapper)
+    public AuthService(UserManager<ApplicationUser> userManager, ILogger<AuthService> logger, IMapper mapper) : base(
+        logger, mapper)
     {
         _userManager = userManager;
     }
@@ -24,7 +25,6 @@ public sealed class AuthService : BaseService, IAuthService
     {
         try
         {
-            Logger.LogInformation($"Attempting to login for user: {request.Email}");
             var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user is null)
@@ -39,7 +39,6 @@ public sealed class AuthService : BaseService, IAuthService
                 throw new InvalidCredentialException($"Credential for user with email {request.Email} are invalid");
             }
 
-            Logger.LogInformation($"Successfully login for user: {request.Email}");
             return Mapper.Map<LoginResponse>(user);
         }
         catch (Exception ex)
@@ -49,7 +48,6 @@ public sealed class AuthService : BaseService, IAuthService
                 throw;
             }
 
-            Logger.LogError(ex, $"Failed to login for user: {request.Email}");
             throw new Exception($"Login for email {request.Email} failed due to: {ex.Message}");
         }
     }

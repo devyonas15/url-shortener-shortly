@@ -12,6 +12,9 @@ public static class OptionsConfiguration
         services.AddOptions<UrlShortenerDbOptions>()
             .Bind(configuration.GetSection(nameof(UrlShortenerDbOptions)));
 
+        services.AddOptions<JwtTokenOptions>()
+            .Bind(configuration.GetSection(nameof(JwtTokenOptions)));
+
         return services;
     }
 }

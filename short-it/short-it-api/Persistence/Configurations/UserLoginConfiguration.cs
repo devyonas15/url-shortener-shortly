@@ -9,5 +9,8 @@ public sealed class UserLoginConfiguration : IEntityTypeConfiguration<IdentityUs
     public void Configure(EntityTypeBuilder<IdentityUserLogin<string>> builder)
     {
         builder.ToTable("UserLogin");
+        
+        // Set composite key manually for the Identity
+        builder.HasKey(x => new { x.LoginProvider, x.ProviderKey });
     }
 }

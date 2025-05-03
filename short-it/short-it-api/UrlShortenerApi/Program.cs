@@ -2,7 +2,9 @@ using System.Diagnostics.CodeAnalysis;
 using Application;
 using HealthChecks.UI.Client;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
 using Persistence;
 using Serilog;
 using UrlShortenerApi.Configurations;
@@ -12,6 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add options services to the container by using IOption Pattern.
 builder.Services.AddOptionsConfiguration(builder.Configuration);
+
+
+// Add Authorization and Authentication
+builder.Services.AddAuthConfiguration();
 
 // Add Health check configuration
 builder.Services.AddHealthCheckConfiguration();
@@ -52,11 +58,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
+
+// Add Authentication and Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-// Register the health
+// Register the health endpoint
 app.MapHealthChecks(
     "api/health",
     new HealthCheckOptions

@@ -9,5 +9,9 @@ public sealed class RoleClaimConfiguration : IEntityTypeConfiguration<IdentityRo
     public void Configure(EntityTypeBuilder<IdentityRoleClaim<string>> builder)
     {
         builder.ToTable("RoleClaim");
+        
+        
+        // Set composite key manually for the Identity
+        builder.HasKey(x =>  x.Id);
     }
 }
