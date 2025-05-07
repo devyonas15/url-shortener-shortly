@@ -1,3 +1,4 @@
+using System.Security.Authentication;
 using Application.Abstractions;
 using Application.Commons.DTO;
 using Application.Contracts.Infrastructure;
@@ -34,10 +35,10 @@ public sealed class LoginCommandHandler : BaseHandlerWithValidator<LoginCommand,
             }
 
             var response = await _authService.SignInAsync(request, cancellationToken);
-            
+
             // Append JWT token after successful sign in
             var accessToken = _tokenService.GenerateJwtToken(response.LoginId, response.Email);
-            
+
             response.AccessToken = accessToken;
 
             Logger.LogInformation($"Successfully login for user: {request.Email}");
@@ -46,12 +47,11 @@ public sealed class LoginCommandHandler : BaseHandlerWithValidator<LoginCommand,
         catch (Exception ex)
         {
             Logger.LogError(ex, $"Failed to login for user: {request.Email}");
-            
-            if (ex is NotFoundException or BadRequestException)
+            if (ex is NotFoundException or BadRequestException or InvalidCredentialException)
             {
                 throw;
             }
-            
+
             throw new Exception($"Failed to login for user {request.Email}: {ex.Message}");
         }
     }

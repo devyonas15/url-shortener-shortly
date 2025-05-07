@@ -43,7 +43,7 @@ public sealed class AuthService : BaseService, IAuthService
         }
         catch (Exception ex)
         {
-            if (ex is NotFoundException or BadRequestException)
+            if (ex is NotFoundException or InvalidCredentialException)
             {
                 throw;
             }
