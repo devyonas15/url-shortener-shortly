@@ -29,6 +29,7 @@ public static class DependencyInjection
         }
 
         services.AddDbContext<UrlDbContext>(OptionsAction);
+        services.AddDbContext<AuthDbContext>(OptionsAction);
 
         return services;
     }

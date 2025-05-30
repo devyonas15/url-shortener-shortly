@@ -13,6 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add options services to the container by using IOption Pattern.
 builder.Services.AddOptionsConfiguration(builder.Configuration);
 
+
+// Add Authorization and Authentication
+builder.Services.AddAuthConfiguration();
+
 // Add Health check configuration
 builder.Services.AddHealthCheckConfiguration();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
@@ -52,11 +56,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
+
+// Add Authentication and Authorization
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-// Register the health
+// Register the health endpoint
 app.MapHealthChecks(
     "api/health",
     new HealthCheckOptions
