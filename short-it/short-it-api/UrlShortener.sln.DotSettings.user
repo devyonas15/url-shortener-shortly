@@ -39,7 +39,7 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\IT\side projects\UrlShortener\UrlShortener\UrlShortener.Test\bin\Debug\net7.0\UrlShortener.Test.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/Users/yonasmulyadi/Library/Caches/JetBrains/Rider2025.1/resharper-host/temp/Rider/vAny/CoverageData/_UrlShortener.1423264342/Snapshot/snapshot.utdcvr</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=50a60e33_002D13b7_002D4514_002D82be_002D9f6b6b7b823b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;test&amp;gt;\&amp;lt;UrlShortener.Test&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
   &lt;Project Location="/Users/yonasmulyadi/Documents/Personal Project/url-shortener-shortly/short-it/short-it-api/UrlShortener.Test" Presentation="&amp;lt;test&amp;gt;\&amp;lt;UrlShortener.Test&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
