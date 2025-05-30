@@ -1,6 +1,6 @@
 using System.Net;
 using Application.Commons.DTO;
-using Application.Features.Login;
+using Application.Modules.Auth.Login;
 using AutoFixture;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

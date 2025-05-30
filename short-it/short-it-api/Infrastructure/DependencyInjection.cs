@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Application.Contracts.Infrastructure;
 using FluentValidation;
-using Infrastructure.Services;
+using Infrastructure.Services.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;

@@ -1,10 +1,10 @@
 using System.Net;
 using Application.Commons.DTO;
-using Application.Features.GenerateUrl;
-using Application.Features.GetAllUrls;
-using Application.Features.GetUrlByBase64Code;
-using Application.Features.GetUrlById;
-using Application.Features.RedirectUrl;
+using Application.Modules.Url.GenerateUrl;
+using Application.Modules.Url.GetAllUrls;
+using Application.Modules.Url.GetUrlByBase64Code;
+using Application.Modules.Url.GetUrlById;
+using Application.Modules.Url.RedirectUrl;
 using AutoFixture;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

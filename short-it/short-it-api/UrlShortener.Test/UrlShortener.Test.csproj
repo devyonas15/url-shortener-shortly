@@ -49,4 +49,8 @@
       <ProjectReference Include="..\Persistence\Persistence.csproj" />
       <ProjectReference Include="..\UrlShortenerApi\UrlShortenerApi.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Applications\Modules\Auth\" />
+    </ItemGroup>
 </Project>
