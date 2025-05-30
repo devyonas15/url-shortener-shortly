@@ -1,5 +1,4 @@
-using Application.Commons.DTO;
-using Application.Features.Login;
+using Application.Modules.Auth.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

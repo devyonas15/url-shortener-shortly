@@ -1,5 +1,4 @@
-using Application.Commons.DTO;
-using Application.Features.Login;
+using Application.Modules.Auth.Login;
 
 namespace Application.Contracts.Infrastructure;
 

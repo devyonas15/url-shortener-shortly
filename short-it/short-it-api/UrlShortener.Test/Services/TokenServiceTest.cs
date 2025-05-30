@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using AutoFixture;
 using Domain.Configurations;
-using Infrastructure.Services;
+using Infrastructure.Services.Auth;
 using Microsoft.Extensions.Options;
 using Moq;
 using UrlShortener.Test.Abstractions;

@@ -20,6 +20,12 @@
     </ItemGroup>
 
 
+    <ItemGroup>
+      <Folder Include="Modules\Auth\" />
+      <Folder Include="Modules\Url\" />
+    </ItemGroup>
+
+
 
 
 

@@ -1,9 +1,8 @@
 using System.Security.Authentication;
-using Application.Commons.DTO;
 using Application.Exceptions;
-using Application.Features.Login;
+using Application.Modules.Auth.Login;
 using AutoFixture;
-using Infrastructure.Services;
+using Infrastructure.Services.Auth;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using Persistence.Models;
