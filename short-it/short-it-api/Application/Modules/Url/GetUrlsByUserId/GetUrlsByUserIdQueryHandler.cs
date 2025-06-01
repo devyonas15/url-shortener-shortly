@@ -2,21 +2,20 @@ using Application.Abstractions;
 using Application.Commons.DTO;
 using Application.Contracts.Persistence;
 using Application.Exceptions;
-using Application.Modules.Url.GetUrlById;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Modules.Url.GetUrlsByUserId;
 
-public class GetUrlsByUserIdQueryHandler :
+public sealed class GetUrlsByUserIdQueryHandler :
     BaseHandlerWithValidator<GetUrlsByUserIdQuery, IReadOnlyList<UrlResponse>, GetUrlsByUserIdQueryValidator>,
     IRequestHandler<GetUrlsByUserIdQuery, IReadOnlyList<UrlResponse>>
 {
     private readonly IUrlRepository _urlRepository;
 
     public GetUrlsByUserIdQueryHandler(IMapper mapper, IUrlRepository repository,
-        ILogger<GetUrlsByUserIdQuery> logger) :
+        ILogger<GetUrlsByUserIdQueryHandler> logger) :
         base(mapper, logger)
     {
         _urlRepository = repository;

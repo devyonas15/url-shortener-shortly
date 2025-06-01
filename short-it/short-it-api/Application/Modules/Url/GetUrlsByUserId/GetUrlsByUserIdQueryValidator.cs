@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace Application.Modules.Url.GetUrlsByUserId;
 
-public class GetUrlsByUserIdQueryValidator : AbstractValidator<GetUrlsByUserIdQuery>
+public sealed class GetUrlsByUserIdQueryValidator : AbstractValidator<GetUrlsByUserIdQuery>
 {
     public GetUrlsByUserIdQueryValidator()
     {
