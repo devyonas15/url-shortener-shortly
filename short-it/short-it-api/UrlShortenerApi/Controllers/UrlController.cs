@@ -3,6 +3,7 @@ using Application.Modules.Url.GenerateUrl;
 using Application.Modules.Url.GetAllUrls;
 using Application.Modules.Url.GetUrlByBase64Code;
 using Application.Modules.Url.GetUrlById;
+using Application.Modules.Url.GetUrlsByUserId;
 using Application.Modules.Url.RedirectUrl;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -41,6 +42,18 @@ public sealed class UrlController : ControllerBase
     public async Task<ActionResult<UrlResponse>> GetUrlByIdAsync(int urlId)
     {
         var response = await _mediator.Send(new GetUrlByIdQuery(urlId));
+
+        return Ok(response);
+    }
+
+    [HttpGet("user/{userId:}/all")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<IReadOnlyList<UrlResponse>>> GetUrlsByUserIdAsync(string userId)
+    {
+        var response = await _mediator.Send(new GetUrlsByUserIdQuery(userId));
 
         return Ok(response);
     }

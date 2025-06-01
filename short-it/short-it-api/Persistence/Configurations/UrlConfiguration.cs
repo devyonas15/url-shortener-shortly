@@ -1,6 +1,7 @@
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Persistence.Models;
 
 namespace Persistence.Configurations;
 
@@ -20,5 +21,10 @@ public sealed class UrlConfiguration : IEntityTypeConfiguration<Url>
         builder.Property(x => x.ShortUrl)
             .IsRequired()
             .HasColumnType("nvarchar(27)");
+        
+        builder.HasOne<ApplicationUser>()
+            .WithMany()
+            .HasForeignKey(x => x.UserId)
+            .IsRequired(false);
     }
 }

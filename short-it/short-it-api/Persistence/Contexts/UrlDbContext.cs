@@ -3,6 +3,8 @@ using System.Reflection;
 using Domain.Abstractions;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Configurations;
+using Persistence.Models;
 
 namespace Persistence.Contexts;
 
@@ -19,7 +21,13 @@ public class UrlDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.ApplyConfiguration(new UrlConfiguration());
+        modelBuilder.ApplyConfiguration(new UrlMetricConfiguration());
+        
+        // Tell EF for the existence of ApplicationUser from AuthDBContext to map with URL
+        modelBuilder.Entity<ApplicationUser>()
+            .ToTable("User", x => x.ExcludeFromMigrations());
+        
         base.OnModelCreating(modelBuilder);
     }
 
