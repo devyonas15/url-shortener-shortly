@@ -4,6 +4,7 @@ using Application.Modules.Url.GenerateUrl;
 using Application.Modules.Url.GetAllUrls;
 using Application.Modules.Url.GetUrlByBase64Code;
 using Application.Modules.Url.GetUrlById;
+using Application.Modules.Url.GetUrlsByUserId;
 using Application.Modules.Url.RedirectUrl;
 using AutoFixture;
 using Microsoft.AspNetCore.Mvc;
@@ -50,6 +51,20 @@ public sealed class UrlControllerTest : TestFixture<UrlController>
             .ReturnsAsync(Fixture.Create<UrlResponse>());
 
         var response = await _controller.GetUrlByBase64Async("asdfg3");
+        var okResponse = response.Result as OkObjectResult;
+
+        Assert.Equal((int)HttpStatusCode.OK, okResponse?.StatusCode);
+        Assert.NotNull(okResponse?.Value);
+    }
+    
+    [Fact]
+    public async Task GivenDataIsFound_WhenGetUrlsByUserIdAsync_ThenReturnsOk()
+    {
+        var mockUrlResponses = Fixture.CreateMany<UrlResponse>().ToList();
+        Mediator.Setup(x => x.Send(It.IsAny<GetUrlsByUserIdQuery>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(mockUrlResponses);
+
+        var response = await _controller.GetUrlsByUserIdAsync(Fixture.Create<string>());
         var okResponse = response.Result as OkObjectResult;
 
         Assert.Equal((int)HttpStatusCode.OK, okResponse?.StatusCode);
