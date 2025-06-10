@@ -7,9 +7,13 @@ import { login } from '../services/loginService';
 import { Box, Button, InputLabel, Stack, TextField } from '@mui/material';
 import { styles } from './LoginForm.styles';
 import { LoginProps } from '../types/LoginProps';
+import { setSessionItem } from '../../../shared/utils/storageUtils/sessionStorageUtils';
+import { BEARER_TOKEN_SESSION_NAME } from '../../../shared/utils/constants/SessionStorageKey';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm: FC<LoginProps> = ({ onSuccessfulLoginCheck }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -30,10 +34,12 @@ const LoginForm: FC<LoginProps> = ({ onSuccessfulLoginCheck }) => {
 
     try {
       const result: LoginResponse = await login(data);
-      console.log(result);
 
+      setSessionItem(BEARER_TOKEN_SESSION_NAME, result.accessToken);
       setIsSubmitting(false);
       onSuccessfulLoginCheck(true);
+
+      navigate('/');
     } catch (error: any) {
       console.error(error.message);
       setIsSubmitting(false);
