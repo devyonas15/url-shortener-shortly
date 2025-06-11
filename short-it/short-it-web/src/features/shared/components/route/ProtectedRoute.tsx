@@ -1,11 +1,16 @@
 import { Outlet, Navigate } from 'react-router-dom';
 import { getSessionItem } from '../../utils/storageUtils/sessionStorageUtils';
-import { BEARER_TOKEN_SESSION_NAME } from '../../utils/constants/SessionStorageKey';
+import { SESSION_DATA } from '../../utils/constants/SessionStorageKey';
+import { LoginResponse } from '../../../auth/login/types/LoginDTO';
 
 const ProtectedRoute = () => {
-  const authToken = getSessionItem(BEARER_TOKEN_SESSION_NAME);
+  const userData = getSessionItem<LoginResponse>(SESSION_DATA, true);
 
-  return authToken ? <Outlet /> : <Navigate to='/login' />;
+  if (null === userData) {
+    return <Navigate to='/login' />;
+  }
+
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

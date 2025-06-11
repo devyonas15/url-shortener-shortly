@@ -14,6 +14,7 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route element={<Dashboard />} path='/' />
         </Route>
+        <Route element={<Dashboard />} path='/' />
       </Routes>
     </BrowserRouter>
   );

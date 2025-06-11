@@ -1,1 +1,1 @@
-export const BEARER_TOKEN_SESSION_NAME = 'bearer_token';
+export const SESSION_DATA = 'session_data';
