@@ -8,7 +8,7 @@ import { Box, Button, InputLabel, Stack, TextField } from '@mui/material';
 import { styles } from './LoginForm.styles';
 import { LoginProps } from '../types/LoginProps';
 import { setSessionItem } from '../../../shared/utils/storageUtils/sessionStorageUtils';
-import { BEARER_TOKEN_SESSION_NAME } from '../../../shared/utils/constants/SessionStorageKey';
+import { SESSION_DATA } from '../../../shared/utils/constants/SessionStorageKey';
 import { useNavigate } from 'react-router-dom';
 
 const LoginForm: FC<LoginProps> = ({ onSuccessfulLoginCheck }) => {
@@ -35,7 +35,7 @@ const LoginForm: FC<LoginProps> = ({ onSuccessfulLoginCheck }) => {
     try {
       const result: LoginResponse = await login(data);
 
-      setSessionItem(BEARER_TOKEN_SESSION_NAME, result.accessToken);
+      setSessionItem(SESSION_DATA, result, true);
       setIsSubmitting(false);
       onSuccessfulLoginCheck(true);
 

@@ -1,12 +1,13 @@
-import { AppProvider } from '@toolpad/core/AppProvider';
+import { AppProvider, Session } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { PageContainer } from '@toolpad/core/PageContainer';
 import CreateLinkPage from '../../url/create-url-link/pages/CreateLinkPage';
 import { useRouter } from '../hooks/useRouter';
-import { JSX } from 'react';
+import { JSX, useMemo, useState } from 'react';
 import { DashboardRoutes } from '../common/enums/dashboardEnums';
 import { navigation } from '../common/configs/navigationConfig';
 import { dashboardTheme } from './DashboardLayout.styles';
+import useSessionAuth from '../hooks/useSessionAuth';
 
 const getPageComponent = (pathName: string): JSX.Element | undefined => {
   switch (pathName) {
@@ -22,10 +23,13 @@ const getPageComponent = (pathName: string): JSX.Element | undefined => {
 
 const Dashboard = () => {
   const router = useRouter(DashboardRoutes.Home);
+  const { session, authentication } = useSessionAuth();
 
   return (
     <AppProvider
       navigation={navigation}
+      authentication={authentication}
+      session={session}
       router={router}
       theme={dashboardTheme}
       branding={{

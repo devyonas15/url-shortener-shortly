@@ -34,3 +34,13 @@ export const setSessionItem = (
     );
   }
 };
+
+export const deleteSessionItem = (key: string) => {
+  try {
+    sessionStorage.removeItem(key);
+  } catch (error) {
+    console.error(
+      `Failed to remove item with key: ${key} from the session storage.`
+    );
+  }
+};
